@@ -1,0 +1,54 @@
+﻿{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/posts/add",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7002"
+        }
+      ],
+      "UpstreamPathTemplate": "/posts/add",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/posts/{postId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7002"
+        }
+      ],
+      "UpstreamPathTemplate": "/posts/{postId}",
+      "UpstreamHttpMethod": [ "PUT", "DELETE" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/posts/from-user/{userId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7002"
+        }
+      ],
+      "UpstreamPathTemplate": "/posts/from-user/{userId}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 60 }
+    },
+    {
+      "DownstreamPathTemplate": "/api/posts/my",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7002"
+        }
+      ],
+      "UpstreamPathTemplate": "/posts/my",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 }
+    }
+  ]
+}

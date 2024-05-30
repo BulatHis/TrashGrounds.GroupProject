@@ -1,0 +1,15 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "FileClient";
+
+message ImageRequest {
+  string image_id = 1;
+}
+
+message ImageResponse {
+  bool exists = 1;
+}
+
+service FileService {
+  rpc CheckImageExists(ImageRequest) returns (ImageResponse);
+}

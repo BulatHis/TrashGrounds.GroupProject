@@ -1,0 +1,298 @@
+version: "3.5"
+
+services:
+  users-db:
+    container_name: ${USER_POSTGRES_HOST}
+    image: postgres:latest
+    restart: unless-stopped
+    ports:
+      - ${USER_POSTGRES_LOCAL_PORT}:${USER_POSTGRES_PORT}
+    volumes:
+      - ./data/users-db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${USER_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${USER_POSTGRES_PASSWORD}
+      - POSTGRES_DB=${USER_POSTGRES_DB}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d tg_users -U postgres" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  users-service:
+    container_name: ${USER_SERVICE_HOST}
+    restart: unless-stopped
+    build:
+      context: ./../../TrashGrounds.User
+      dockerfile: Dockerfile
+    ports:
+      - ${USER_SERVICE_HTTP_LOCAL_PORT}:${USER_SERVICE_HTTP_PORT}
+      - ${USER_SERVICE_HTTP2_LOCAL_PORT}:${USER_SERVICE_HTTP2_PORT}
+    depends_on:
+      users-db:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:${USER_SERVICE_HTTP_PORT};http://+:${USER_SERVICE_HTTP2_PORT}
+      ASPNETCORE_Kestrel__Endpoints__Http__Url: http://+:${USER_SERVICE_HTTP_PORT}
+      ASPNETCORE_Kestrel__Endpoints__Http__Protocols: Http1AndHttp2
+      ASPNETCORE_Kestrel__Endpoints__Http2__Url: http://+:${USER_SERVICE_HTTP2_PORT}
+      ASPNETCORE_Kestrel__Endpoints__Http2__Protocols: Http2
+      ConnectionStrings__Postgres: Host=${USER_POSTGRES_HOST};Port=${USER_POSTGRES_PORT};Username=${USER_POSTGRES_USER};Password=${USER_POSTGRES_PASSWORD};Database=${USER_POSTGRES_DB}
+      Jwt__Key: ${JWT_KEY}
+      Microservices__File: http://${FILE_SERVICE_HOST}:${FILE_SERVICE_HTTP2_PORT}
+      ElasticConfiguration__Uri: http://${ELASTIC_HOST}:${ELASTIC_HTTP_PORT}
+  
+  tracks-db:
+    container_name: ${TRACK_POSTGRES_HOST}
+    image: postgres:latest
+    ports:
+      - ${TRACK_POSTGRES_LOCAL_PORT}:${TRACK_POSTGRES_PORT}
+    volumes:
+      - ./data/tracks-db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${TRACK_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${TRACK_POSTGRES_PASSWORD}
+      - POSTGRES_DB=${TRACK_POSTGRES_DB}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d tg_tracks -U postgres" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  tracks-service:
+    container_name: ${TRACK_SERVICE_HOST}
+    restart: unless-stopped
+    build:
+      context: ./../../TrashGrounds.Track
+      dockerfile: Dockerfile
+    ports:
+      - ${TRACK_SERVICE_HTTP_LOCAL_PORT}:${TRACK_SERVICE_HTTP_PORT}
+      - ${TRACK_SERVICE_HTTP2_LOCAL_PORT}:${TRACK_SERVICE_HTTP2_PORT}
+    depends_on:
+      tracks-db:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:${TRACK_SERVICE_HTTP_PORT};http://+:${TRACK_SERVICE_HTTP2_PORT}
+      ASPNETCORE_Kestrel__Endpoints__Http__Url: http://+:${TRACK_SERVICE_HTTP_PORT}
+      ASPNETCORE_Kestrel__Endpoints__Http__Protocols: Http1AndHttp2
+      ASPNETCORE_Kestrel__Endpoints__Http2__Url: http://+:${TRACK_SERVICE_HTTP2_PORT}
+      ASPNETCORE_Kestrel__Endpoints__Http2__Protocols: Http2
+      ConnectionStrings__Postgres: Host=${TRACK_POSTGRES_HOST};Port=${TRACK_POSTGRES_PORT};Username=${TRACK_POSTGRES_USER};Password=${TRACK_POSTGRES_PASSWORD};Database=${TRACK_POSTGRES_DB}
+      Jwt__Key: ${JWT_KEY}
+      Microservices__User: http://${USER_SERVICE_HOST}:${USER_SERVICE_HTTP2_PORT}
+      Microservices__Rate: http://${RATE_SERVICE_HOST}:${RATE_SERVICE_HTTP2_PORT}
+      Microservices__File: http://${FILE_SERVICE_HOST}:${FILE_SERVICE_HTTP2_PORT}
+      ElasticConfiguration__Uri: http://${ELASTIC_HOST}:${ELASTIC_HTTP_PORT}
+
+  rates-db:
+    container_name: ${RATE_POSTGRES_HOST}
+    image: postgres:latest
+    ports:
+      - ${RATE_POSTGRES_LOCAL_PORT}:${RATE_POSTGRES_PORT}
+    volumes:
+      - ./data/rates-db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${RATE_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${RATE_POSTGRES_PASSWORD}
+      - POSTGRES_DB=${RATE_POSTGRES_DB}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d tg_rates -U postgres" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  rates-service:
+    container_name: ${RATE_SERVICE_HOST}
+    restart: unless-stopped
+    build:
+      context: ./../../TrashGrounds.Rate
+      dockerfile: Dockerfile
+    ports:
+      - ${RATE_SERVICE_HTTP_LOCAL_PORT}:${RATE_SERVICE_HTTP_PORT}
+      - ${RATE_SERVICE_HTTP2_LOCAL_PORT}:${RATE_SERVICE_HTTP2_PORT}
+    depends_on:
+      rates-db:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:${RATE_SERVICE_HTTP_PORT};http://+:${RATE_SERVICE_HTTP2_PORT}
+      ASPNETCORE_Kestrel__Endpoints__Http__Url: http://+:${RATE_SERVICE_HTTP_PORT}
+      ASPNETCORE_Kestrel__Endpoints__Http__Protocols: Http1AndHttp2
+      ASPNETCORE_Kestrel__Endpoints__Http2__Url: http://+:${RATE_SERVICE_HTTP2_PORT}
+      ASPNETCORE_Kestrel__Endpoints__Http2__Protocols: Http2
+      ConnectionStrings__Postgres: Host=${RATE_POSTGRES_HOST};Port=${RATE_POSTGRES_PORT};Username=${RATE_POSTGRES_USER};Password=${RATE_POSTGRES_PASSWORD};Database=${RATE_POSTGRES_DB}
+      Jwt__Key: ${JWT_KEY}
+      ElasticConfiguration__Uri: http://${ELASTIC_HOST}:${ELASTIC_HTTP_PORT}
+
+  posts-db:
+    container_name: ${POST_POSTGRES_HOST}
+    image: postgres:latest
+    ports:
+      - ${POST_POSTGRES_LOCAL_PORT}:${POST_POSTGRES_PORT}
+    volumes:
+      - ./data/posts-db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${POST_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POST_POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POST_POSTGRES_DB}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d tg_posts -U postgres" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  posts-service:
+    container_name: ${POST_SERVICE_HOST}
+    restart: unless-stopped
+    build:
+      context: ./../../TrashGrounds.Post
+      dockerfile: Dockerfile
+    ports:
+      - ${POST_SERVICE_HTTP_LOCAL_PORT}:${POST_SERVICE_HTTP_PORT}
+      - ${POST_SERVICE_HTTP2_LOCAL_PORT}:${POST_SERVICE_HTTP2_PORT}
+    depends_on:
+      posts-db:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:${POST_SERVICE_HTTP_PORT};http://+:${POST_SERVICE_HTTP2_PORT}
+      ASPNETCORE_Kestrel__Endpoints__Http__Url: http://+:${POST_SERVICE_HTTP_PORT}
+      ASPNETCORE_Kestrel__Endpoints__Http__Protocols: Http1AndHttp2
+      ASPNETCORE_Kestrel__Endpoints__Http2__Url: http://+:${POST_SERVICE_HTTP2_PORT}
+      ASPNETCORE_Kestrel__Endpoints__Http2__Protocols: Http2
+      ConnectionStrings__Postgres: Host=${POST_POSTGRES_HOST};Port=${POST_POSTGRES_PORT};Username=${POST_POSTGRES_USER};Password=${POST_POSTGRES_PASSWORD};Database=${POST_POSTGRES_DB}
+      Jwt__Key: ${JWT_KEY}
+      Microservices__Rate: http://${RATE_SERVICE_HOST}:${RATE_SERVICE_HTTP2_PORT}
+      Microservices__File: http://${FILE_SERVICE_HOST}:${FILE_SERVICE_HTTP2_PORT}
+      ElasticConfiguration__Uri: http://${ELASTIC_HOST}:${ELASTIC_HTTP_PORT}
+
+  comments-db:
+    container_name: ${COMMENT_POSTGRES_HOST}
+    image: postgres:latest
+    ports:
+      - ${COMMENT_POSTGRES_LOCAL_PORT}:${COMMENT_POSTGRES_PORT}
+    volumes:
+      - ./data/comments-db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${COMMENT_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${COMMENT_POSTGRES_PASSWORD}
+      - POSTGRES_DB=${COMMENT_POSTGRES_DB}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d tg_comments -U postgres" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  comments-service:
+    container_name: ${COMMENT_SERVICE_HOST}
+    restart: unless-stopped
+    build:
+      context: ./../../TrashGrounds.Comment
+      dockerfile: Dockerfile
+    ports:
+      - ${COMMENT_SERVICE_HTTP_LOCAL_PORT}:${COMMENT_SERVICE_HTTP_PORT}
+    depends_on:
+      comments-db:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:${COMMENT_SERVICE_HTTP_PORT}
+      ConnectionStrings__Postgres: Host=${COMMENT_POSTGRES_HOST};Port=${COMMENT_POSTGRES_PORT};Username=${COMMENT_POSTGRES_USER};Password=${COMMENT_POSTGRES_PASSWORD};Database=${COMMENT_POSTGRES_DB}
+      Jwt__Key: ${JWT_KEY}
+      Microservices__User: "http://users-service:5070"
+      ElasticConfiguration__Uri: http://${ELASTIC_HOST}:${ELASTIC_HTTP_PORT}
+
+  files-db:
+    container_name: ${FILE_POSTGRES_HOST}
+    image: postgres:latest
+    ports:
+      - ${FILE_POSTGRES_LOCAL_PORT}:${FILE_POSTGRES_PORT}
+    volumes:
+      - ./data/files-db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${FILE_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${FILE_POSTGRES_PASSWORD}
+      - POSTGRES_DB=${FILE_POSTGRES_DB}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d tg_files -U postgres" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  hangfire-db:
+    container_name: ${HANGFIRE_POSTGRES_HOST}
+    image: postgres:latest
+    ports:
+      - ${HANGFIRE_POSTGRES_LOCAL_PORT}:${HANGFIRE_POSTGRES_PORT}
+    environment:
+      - POSTGRES_USER=${HANGFIRE_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${HANGFIRE_POSTGRES_PASSWORD}
+      - POSTGRES_DB=${HANGFIRE_POSTGRES_DB}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d tg_hangfire -U postgres" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  files-service:
+    container_name: ${FILE_SERVICE_HOST}
+    restart: unless-stopped
+    build:
+      context: ./../../TrashGrounds.File
+      dockerfile: Dockerfile
+    ports:
+      - ${FILE_SERVICE_HTTP_LOCAL_PORT}:${FILE_SERVICE_HTTP_PORT}
+      - ${FILE_SERVICE_HTTP2_LOCAL_PORT}:${FILE_SERVICE_HTTP2_PORT}
+    depends_on:
+      files-db:
+        condition: service_healthy
+      hangfire-db:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:${FILE_SERVICE_HTTP_PORT};http://+:${FILE_SERVICE_HTTP2_PORT}
+      ASPNETCORE_Kestrel__Endpoints__Http__Url: http://+:${FILE_SERVICE_HTTP_PORT}
+      ASPNETCORE_Kestrel__Endpoints__Http__Protocols: Http1AndHttp2
+      ASPNETCORE_Kestrel__Endpoints__Http2__Url: http://+:${FILE_SERVICE_HTTP2_PORT}
+      ASPNETCORE_Kestrel__Endpoints__Http2__Protocols: Http2
+      ConnectionStrings__Postgres: Host=${FILE_POSTGRES_HOST};Port=${FILE_POSTGRES_PORT};Username=${FILE_POSTGRES_USER};Password=${FILE_POSTGRES_PASSWORD};Database=${FILE_POSTGRES_DB}
+      ConnectionStrings__Hangfire: Host=${HANGFIRE_POSTGRES_HOST};Port=${HANGFIRE_POSTGRES_PORT};Username=${HANGFIRE_POSTGRES_USER};Password=${HANGFIRE_POSTGRES_PASSWORD};Database=${HANGFIRE_POSTGRES_DB}
+      Jwt__Key: ${JWT_KEY}
+      UsedFiles__User: http://${USER_SERVICE_HOST}:${USER_SERVICE_HTTP2_PORT}
+      UsedFiles__Post: http://${POST_SERVICE_HOST}:${POST_SERVICE_HTTP2_PORT}
+      UsedFiles__Track: http://${TRACK_SERVICE_HOST}:${TRACK_SERVICE_HTTP2_PORT}
+      ElasticConfiguration__Uri: http://${ELASTIC_HOST}:${ELASTIC_HTTP_PORT}
+    volumes:
+      - images:/app/Files/Images
+      - music:/app/Files/Music
+
+  gateway:
+    container_name: ${GATEWAY_HOST}
+    restart: unless-stopped
+    build:
+      context: ./../../TrashGrounds.Gateway
+      dockerfile: Dockerfile
+    ports:
+      - ${GATEWAY_HTTPS_LOCAL_PORT}:${GATEWAY_HTTPS_PORT}
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: https://+:${GATEWAY_HTTPS_PORT}
+  
+
+volumes:
+  images:
+    name: images
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./images
+  music:
+    name: music
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./music

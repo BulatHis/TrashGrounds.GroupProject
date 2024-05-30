@@ -1,0 +1,52 @@
+﻿{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/file/image/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7020"
+        }
+      ],
+      "UpstreamPathTemplate": "/image/{id}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/file/image/upload",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7020"
+        }
+      ],
+      "UpstreamPathTemplate": "/image/upload",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/file/music/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7020"
+        }
+      ],
+      "UpstreamPathTemplate": "/music/{id}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/file/music/upload",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7020"
+        }
+      ],
+      "UpstreamPathTemplate": "/music/upload",
+      "UpstreamHttpMethod": [ "POST" ]
+    }
+  ]
+}

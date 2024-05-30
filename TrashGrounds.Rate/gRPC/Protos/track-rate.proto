@@ -1,0 +1,39 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "TrackRateServer";
+
+message GetTracksRateRequest {
+  repeated string ids = 1;
+}
+
+message TrackRate {
+  string id = 1;
+  double rating = 2;
+}
+
+message GetTracksRateResponse {
+  repeated TrackRate rates = 1;
+}
+
+message GetTrackRateRequest {
+  string id = 1;
+}
+
+message GetTrackRateResponse {
+  double rating = 1;
+}
+
+message GetBestRatedTracksRequest {
+  int32 take = 1;
+  int32 skip = 2;
+}
+
+message GetBestRatedTracksResponse {
+  repeated TrackRate rates = 1;
+}
+
+service TrackRateService {
+  rpc GetTracksRate(GetTracksRateRequest) returns (GetTracksRateResponse);
+  rpc GetTrackRate(GetTrackRateRequest) returns (GetTrackRateResponse);
+  rpc GetBestRatedTrack(GetBestRatedTracksRequest) returns (GetBestRatedTracksResponse);
+}

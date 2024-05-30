@@ -1,0 +1,22 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "UsedFilesClient";
+
+message UsedImagesRequest {
+}
+
+message UsedImagesResponse {
+  repeated string ids = 1;
+}
+
+message UsedTracksRequest {
+}
+
+message UsedTracksResponse {
+  repeated string ids = 1;
+}
+
+service UsedFilesService {
+  rpc GetUsedImagesIds(UsedImagesRequest) returns (UsedImagesResponse);
+  rpc GetUsedTracksIds(UsedTracksRequest) returns (UsedTracksResponse);
+}

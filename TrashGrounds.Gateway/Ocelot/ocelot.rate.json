@@ -1,0 +1,40 @@
+﻿{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/post/{postId}/rate",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "rates-service",
+          "Port": "5052"
+        }
+      ],
+      "UpstreamPathTemplate": "/post/{postId}/rate",
+      "UpstreamHttpMethod": [ "GET", "POST", "DELETE" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/rate/from-posts",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "rates-service",
+          "Port": "5052"
+        }
+      ],
+      "UpstreamPathTemplate": "/rate/from-posts",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/track/{trackId}/rate",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "rates-service",
+          "Port": "5052"
+        }
+      ],
+      "UpstreamPathTemplate": "/track/{trackId}/rate",
+      "UpstreamHttpMethod": [ "GET", "POST", "DELETE" ]
+    }
+  ]
+}

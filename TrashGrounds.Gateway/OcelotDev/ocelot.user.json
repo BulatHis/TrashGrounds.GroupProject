@@ -1,0 +1,113 @@
+﻿{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/auth/current-id", 
+      "DownstreamScheme": "https", 
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost", 
+          "Port": "7035"
+        }
+      ], 
+      "UpstreamPathTemplate": "/auth/current-id", 
+      "UpstreamHttpMethod": [ "GET", "OPTIONS" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/auth/login",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7035"
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/login",
+      "UpstreamHttpMethod": [ "POST", "OPTIONS" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/auth/refresh-tokens",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7035"
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/refresh",
+      "UpstreamHttpMethod": [ "POST", "OPTIONS"]
+    },
+    {
+      "DownstreamPathTemplate": "/api/auth/register",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7035"
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/register",
+      "UpstreamHttpMethod": [ "POST", "OPTIONS"]
+    },
+    {
+      "DownstreamPathTemplate": "/api/auth/change-password",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7035"
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/change-password",
+      "UpstreamHttpMethod": [ "PATCH", "OPTIONS"]
+    },
+    
+    {
+      "DownstreamPathTemplate": "/api/user/change-avatar",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7035"
+        }
+      ],
+      "UpstreamPathTemplate": "/user/avatar",
+      "UpstreamHttpMethod": [ "PATCH", "OPTIONS"]
+    },
+    {
+      "DownstreamPathTemplate": "/api/user/change-status",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7035"
+        }
+      ],
+      "UpstreamPathTemplate": "/user/status",
+      "UpstreamHttpMethod": [ "PATCH", "OPTIONS"]
+    },
+    {
+      "DownstreamPathTemplate": "/api/user/me",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7035"
+        }
+      ],
+      "UpstreamPathTemplate": "/user/profile/my",
+      "UpstreamHttpMethod": [ "GET","OPTIONS" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/user/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7035"
+        }
+      ],
+      "UpstreamPathTemplate": "/user/profile/{id}",
+      "UpstreamHttpMethod": [ "GET", "OPTIONS"]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "PostRateServer";
+
+message GetPostsRateRequest {
+  repeated string ids = 1;
+}
+
+message PostRate {
+  string id = 2;
+  int32 rating = 3;
+}
+
+message GetPostsRateResponse {
+  repeated PostRate rates = 4;
+}
+
+message GetPostRateRequest {
+  string id = 5;
+}
+
+message GetPostRateResponse {
+  int32 rating = 6;
+}
+
+service PostRateService {
+  rpc GetPostsRate(GetPostsRateRequest) returns (GetPostsRateResponse);
+  rpc GetPostRate(GetPostRateRequest) returns (GetPostRateResponse);
+}

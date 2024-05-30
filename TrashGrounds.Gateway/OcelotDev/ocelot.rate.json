@@ -1,0 +1,29 @@
+﻿{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/post/{postId}/rate",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7003"
+        }
+      ],
+      "UpstreamPathTemplate": "/post/{postId}/rate",
+      "UpstreamHttpMethod": [ "GET", "POST", "DELETE" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/track/{trackId}/rate",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7003"
+        }
+      ],
+      "UpstreamPathTemplate": "/track/{trackId}/rate",
+      "UpstreamHttpMethod": [ "GET", "POST", "DELETE" ],
+      "FileCacheOptions": { "TtlSeconds": 10 }
+    }
+  ]
+}

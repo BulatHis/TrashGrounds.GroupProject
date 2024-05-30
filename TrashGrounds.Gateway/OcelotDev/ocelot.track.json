@@ -1,0 +1,104 @@
+﻿{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/genre/all",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7189"
+        }
+      ],
+      "UpstreamPathTemplate": "/genres/all",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 }
+    },
+    {
+      "DownstreamPathTemplate": "/api/track/{trackId}/add-listen",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7189"
+        }
+      ],
+      "UpstreamPathTemplate": "/track/{trackId}/add-listen",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/track/add",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7189"
+        }
+      ],
+      "UpstreamPathTemplate": "/track/add",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/track/{trackId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7189"
+        }
+      ],
+      "UpstreamPathTemplate": "/track/{trackId}",
+      "UpstreamHttpMethod": [ "GET", "DELETE" ],
+      "FileCacheOptions": { "TtlSeconds": 30 }
+    },
+    {
+      "DownstreamPathTemplate": "/api/track/{category}?take={take}&skip={skip}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7189"
+        }
+      ],
+      "UpstreamPathTemplate": "/track/{category}?take={take}&skip={skip}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 60 }
+    },
+    {
+      "DownstreamPathTemplate": "/api/track/from-user/{id}?take={take}&skip={skip}&excludeTrackId={trackId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7189"
+        }
+      ],
+      "UpstreamPathTemplate": "/track/from-user/{id}?take={take}&skip={skip}&excludeTrackId={trackId}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 30 }
+    },
+    {
+      "DownstreamPathTemplate": "/api/track/search",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7189"
+        }
+      ],
+      "UpstreamPathTemplate": "/track/search",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/track/update",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7189"
+        }
+      ],
+      "UpstreamPathTemplate": "/track/from-user/update",
+      "UpstreamHttpMethod": [ "PUT" ]
+    }
+  ]
+}

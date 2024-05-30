@@ -1,0 +1,113 @@
+﻿{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/auth/current-id", 
+      "DownstreamScheme": "http", 
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "users-service", 
+          "Port": "5050"
+        }
+      ], 
+      "UpstreamPathTemplate": "/auth/current-id", 
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/auth/login",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "users-service",
+          "Port": "5050"
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/login",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/auth/refresh-tokens",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "users-service",
+          "Port": "5050"
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/refresh",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/auth/register",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "users-service",
+          "Port": "5050"
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/register",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/auth/change-password",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "users-service",
+          "Port": "5050"
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/change-password",
+      "UpstreamHttpMethod": [ "PATCH" ]
+    },
+    
+    {
+      "DownstreamPathTemplate": "/api/user/change-avatar",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "users-service",
+          "Port": "5050"
+        }
+      ],
+      "UpstreamPathTemplate": "/user/avatar",
+      "UpstreamHttpMethod": [ "PATCH" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/user/change-status",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "users-service",
+          "Port": "5050"
+        }
+      ],
+      "UpstreamPathTemplate": "/user/status",
+      "UpstreamHttpMethod": [ "PATCH" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/user/me",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "users-service",
+          "Port": "5050"
+        }
+      ],
+      "UpstreamPathTemplate": "/user/profile/my",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/user/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "users-service",
+          "Port": "5050"
+        }
+      ],
+      "UpstreamPathTemplate": "/user/profile/{id}",
+      "UpstreamHttpMethod": [ "GET" ]
+    }
+  ]
+}
